@@ -2,7 +2,8 @@
 Credit Card Tracker Bot
 Telegram bot that logs credit card transactions to Google Sheets.
 """
-
+import os
+import json
 import logging
 import re
 from datetime import datetime
@@ -42,7 +43,12 @@ logger = logging.getLogger(__name__)
 # ─────────────────────────────────────────────
 
 def get_sheet():
-    creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+    creds_json = os.environ.get("GOOGLE_CREDENTIALS")
+    if creds_json:
+        creds_dict = json.loads(creds_json)
+        creds = Credentials.from_service_account_info(creds_dict, scopes=SCOPES)
+    else:
+        creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
     client = gspread.authorize(creds)
     spreadsheet = client.open_by_key(SPREADSHEET_ID)
     return spreadsheet.worksheet(SHEET_NAME)
