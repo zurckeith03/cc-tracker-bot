@@ -90,10 +90,10 @@ def parse_message(text: str):
             "date: <date>"
         )
 
-    bank = match.group(1).strip().lower()
+    bank = match.group(1).strip().upper()
     amount_raw = match.group(2).strip()
     merchant = match.group(3).strip().upper()
-    usage = match.group(4).strip().lower()
+    usage = match.group(4).strip().upper()
     date_raw = match.group(5).strip()
 
     # Validate bank
@@ -110,11 +110,11 @@ def parse_message(text: str):
         raise ValueError(f"Invalid amount: '{amount_raw}'. Please enter a numeric value.")
 
     # Validate usage
-    usage_parts = [u.strip() for u in re.split(r"[/,]", usage)]
+    usage_parts = [u.strip().upper() for u in re.split(r"[/,]", usage)]
     for part in usage_parts:
         if part not in VALID_USERS:
             raise ValueError(
-                f"Invalid usage: '{part}'. Accepted values: mama, dad, vane, keith"
+                f"Invalid usage: '{part}'. Accepted values: MD, VK, Others"
             )
 
     # Validate date
@@ -131,10 +131,10 @@ def parse_message(text: str):
         )
 
     return {
-        "bank": bank.upper(),
+        "bank": bank,
         "amount": amount,
         "merchant": merchant,
-        "usage": " / ".join([u.capitalize() for u in usage_parts]),
+        "usage": " / ".join(usage_parts),
         "date": formatted_date,
     }
 
@@ -174,10 +174,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "Credit Card Tracker is active.\n\n"
         "Send a transaction using this format:\n\n"
-        "credit card: <amex/bpi/bdo/atome/sb>\n"
+        "credit card: <AMEX / BPI / BDO VISA / ATOME / SB>\n"
         "amount: <amount>\n"
         "transaction: <merchant name>\n"
-        "usage: <mama/dad/vane/keith>\n"
+        "usage: <MD / VK / Others>\n"
         "date: <MM/DD/YYYY>"
     )
 
