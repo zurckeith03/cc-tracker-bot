@@ -58,7 +58,7 @@ def ensure_headers(sheet):
     headers = sheet.row_values(1)
     expected = ["#", "DATE", "BANK", "AMOUNT", "MERCHANT", "USAGE", "LOGGED AT"]
     if headers != expected:
-        sheet.insert_row(expected, 1)
+        sheet.update("A1:G1", [expected])
 
 
 # ─────────────────────────────────────────────
