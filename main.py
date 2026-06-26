@@ -147,9 +147,9 @@ def log_to_sheet(data: dict) -> int:
     sheet = get_sheet()
     ensure_headers(sheet)
 
-    # Count only rows that have actual data (excluding header row 1)
+    # Count only rows that have a numeric value in column A (actual data rows)
     existing_data = sheet.get_all_values()
-    data_rows = [r for r in existing_data[1:] if any(cell.strip() for cell in r)]
+    data_rows = [r for r in existing_data[1:] if r and r[0].strip().isdigit()]
     record_number = len(data_rows) + 1
 
     logged_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
