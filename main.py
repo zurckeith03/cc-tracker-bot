@@ -19,7 +19,7 @@ from google.oauth2.service_account import Credentials
 # ─────────────────────────────────────────────
 
 BOT_TOKEN = "8881387349:AAEi75IzDKJ-U0w3ms8tFg37-jRboIa1hog"
-SPREADSHEET_ID = "1j-Rafr9X1Wz9p0QzIiAPiI253WcJiX3x"
+SPREADSHEET_ID = "18waMn7TvK3xDCCF3r1cmVTl3HE6nn1_koD3rrsHuRIA"
 SHEET_NAME = "Transactions"
 SERVICE_ACCOUNT_FILE = "service_account.json"
 
