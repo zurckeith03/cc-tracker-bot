@@ -1,2 +1,0 @@
-[deploy]
-startCommand = "python cc_bot.py"
