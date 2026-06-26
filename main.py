@@ -147,9 +147,10 @@ def log_to_sheet(data: dict) -> int:
     sheet = get_sheet()
     ensure_headers(sheet)
 
-    all_rows = sheet.get_all_values()
-    next_row_num = len(all_rows)  # row 1 = headers, so data starts at 2
-    record_number = max(1, next_row_num)
+    # Count only rows that have actual data (excluding header row 1)
+    existing_data = sheet.get_all_values()
+    data_rows = [r for r in existing_data[1:] if any(cell.strip() for cell in r)]
+    record_number = len(data_rows) + 1
 
     logged_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -162,7 +163,9 @@ def log_to_sheet(data: dict) -> int:
         data["usage"],
         logged_at,
     ]
-    sheet.append_row(row, value_input_option="USER_ENTERED")
+    # Write directly to the next truly empty row to avoid ghost row issues
+    next_row = len(sheet.get_all_values()) + 1
+    sheet.update(f"A{next_row}:G{next_row}", [row])
     return record_number
 
 
